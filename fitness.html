@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fitness — Ranjeet Kumar</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0A0A0A;--bg2:#111111;--bg3:#1A1A1A;
+  --red:#E8001C;--orange:#FF6B00;--yellow:#FFD000;
+  --white:#FFFFFF;--light:#C8C8C8;--muted:#666666;
+  --border:rgba(255,255,255,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white);letter-spacing:4px;text-decoration:none;text-transform:uppercase}
+.nav-logo span{color:var(--red)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-tag{font-family:'Roboto Mono',monospace;font-size:.65rem;color:var(--red);letter-spacing:3px;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.nav-tag::before{content:'';width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.hub-btn{background:transparent;border:none;cursor:pointer;padding:6px 8px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.hub-btn span{display:block;width:22px;height:2px;background:var(--muted);transition:all .3s}
+.hub-btn:hover span{background:var(--red)}
+.hub-btn:hover span:nth-child(1){transform:translateX(4px)}
+.hub-btn:hover span:nth-child(3){transform:translateX(-4px)}
+
+/* ── HUB OVERLAY ── */
+.hub-overlay{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background:rgba(4,4,4,.96);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.hub-overlay.open{opacity:1;pointer-events:all}
+.hub-close{position:absolute;top:24px;right:32px;background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--muted);font-family:'Roboto Mono',monospace;font-size:.72rem;padding:8px 18px;cursor:pointer;transition:all .2s;letter-spacing:2px;text-transform:uppercase}
+.hub-close:hover{border-color:var(--red);color:var(--red)}
+.hub-back{position:absolute;top:26px;left:40px;font-family:'Roboto Mono',monospace;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s;display:flex;align-items:center;gap:8px}
+.hub-back:hover{color:var(--white)}
+.hub-back::before{content:'←'}
+.hub-inner{width:100%;max-width:1000px;padding:0 32px;text-align:center}
+.hub-label{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.hub-title{font-family:'Oswald',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--white);margin-bottom:48px;text-transform:uppercase;letter-spacing:3px}
+.hub-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.hub-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-decoration:none;position:relative;overflow:hidden;transition:transform .3s ease;min-height:320px}
+.hub-card:hover{transform:translateY(-6px)}
+.hub-card-glow{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80%;height:50%;border-radius:50%;filter:blur(60px);opacity:0;transition:opacity .4s}
+.hub-card:hover .hub-card-glow{opacity:.6}
+.hub-card-icon{font-size:2.8rem;margin-bottom:18px;transition:transform .3s}
+.hub-card:hover .hub-card-icon{transform:scale(1.15)}
+.hub-card-name{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px}
+.hub-card-desc{font-family:'Inter',sans-serif;font-size:.88rem;font-weight:300;line-height:1.65;margin-bottom:24px;max-width:200px;opacity:.7}
+.hub-card-cta{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;border:1px solid currentColor;opacity:.75;transition:all .2s}
+.hub-card:hover .hub-card-cta{opacity:1}
+.hc-fitness{background:#0D0D0D;color:#fff;border:1px solid rgba(232,0,28,.15)}
+.hc-fitness .hub-card-glow{background:#E8001C}
+.hc-fitness .hub-card-name{color:#FF2200}
+.hc-fitness .hub-card-cta{border-color:rgba(255,34,0,.5);color:#FF2200}
+.hc-fitness:hover .hub-card-cta{background:#FF2200;color:#0D0D0D}
+.hc-fitness.current{border-color:rgba(232,0,28,.5);background:#120000}
+.hc-travel{background:#0A0805;color:#EDE4D0;border:1px solid rgba(212,168,83,.12)}
+.hc-travel .hub-card-glow{background:#C9963E}
+.hc-travel .hub-card-name{color:#D4A853}
+.hc-travel .hub-card-cta{border-color:rgba(212,168,83,.5);color:#D4A853}
+.hc-travel:hover .hub-card-cta{background:#D4A853;color:#0A0805}
+.hc-lifestyle{background:#080C09;color:#E4EDE7;border:1px solid rgba(92,153,112,.12)}
+.hc-lifestyle .hub-card-glow{background:#4A8C6A}
+.hc-lifestyle .hub-card-name{color:#7EB899}
+.hc-lifestyle .hub-card-cta{border-color:rgba(126,184,153,.5);color:#7EB899}
+.hc-lifestyle:hover .hub-card-cta{background:#7EB899;color:#080C09}
+@media(max-width:700px){.hub-cards{grid-template-columns:1fr}.hub-card{min-height:auto;padding:32px 20px}.hub-inner{padding:0 16px}.hub-title{margin-bottom:28px}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0A0A0A 40%,#1a0000 100%)}
+.hero-line{position:absolute;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(232,0,28,.3),transparent)}
+.hero-line:nth-child(2){left:25%}
+.hero-line:nth-child(3){left:50%;background:linear-gradient(180deg,transparent,rgba(255,107,0,.2),transparent)}
+.hero-line:nth-child(4){left:75%}
+.hero-stat-bg{position:absolute;top:50%;right:60px;transform:translateY(-50%);font-family:'Oswald',sans-serif;font-size:clamp(12rem,22vw,22rem);font-weight:700;color:rgba(255,255,255,.025);line-height:1;pointer-events:none;user-select:none;letter-spacing:-8px}
+.hero-tag{font-family:'Roboto Mono',monospace;font-size:.68rem;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:16px;position:relative;z-index:1}
+.hero-title{font-family:'Oswald',sans-serif;font-size:clamp(4rem,10vw,9rem);font-weight:700;line-height:.9;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.hero-title span{color:var(--red);display:block}
+.hero-desc{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:300;color:var(--light);max-width:560px;line-height:1.75;margin-bottom:48px;position:relative;z-index:1}
+.hero-metrics{display:flex;gap:48px;flex-wrap:wrap;position:relative;z-index:1}
+.metric{border-left:3px solid var(--red);padding-left:16px}
+.metric-val{font-family:'Oswald',sans-serif;font-size:2.4rem;font-weight:700;line-height:1;color:var(--white)}
+.metric-val span{font-size:1.2rem;color:var(--red)}
+.metric-label{font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.scroll-hint{position:absolute;bottom:32px;right:60px;font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;writing-mode:vertical-rl;display:flex;align-items:center;gap:12px}
+.scroll-hint::after{content:'';width:1px;height:48px;background:linear-gradient(transparent,var(--red))}
+
+/* ── MAIN ── */
+.main{max-width:1120px;margin:0 auto;padding:80px 40px 100px}
+.section-label{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:8px}
+.section-title{font-family:'Oswald',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;text-transform:uppercase;color:var(--white);margin-bottom:48px;line-height:1}
+.section-title span{color:var(--red)}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:40px;padding:14px 20px;background:var(--bg2);border:1px solid var(--border)}
+.filter-label{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.filter-btn{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--red);color:var(--white);background:var(--red)}
+.filter-spacer{flex:1}
+.post-count{font-family:'Roboto Mono',monospace;font-size:.62rem;color:var(--muted)}
+.post-count span{color:var(--white)}
+
+/* ── GRID ── */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2px}
+.blog-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;position:relative;transition:border-color .25s,transform .25s;display:flex;flex-direction:column}
+.blog-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--red);transition:height .35s;z-index:1}
+.blog-card:hover{border-color:rgba(232,0,28,.4);transform:translateY(-4px)}
+.blog-card:hover::before{height:100%}
+.card-img{width:100%;height:200px;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
+.blog-card:hover .card-img img{transform:scale(1.05)}
+.card-cat-bar{height:3px;background:linear-gradient(90deg,var(--red),var(--orange))}
+.card-header{padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center}
+.card-cat{font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);background:rgba(232,0,28,.08);border:1px solid rgba(232,0,28,.25);padding:3px 10px}
+.card-date{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted)}
+.card-body{padding:16px 24px 20px;flex:1}
+.card-title{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;color:var(--white);margin-bottom:12px;line-height:1.25;letter-spacing:.5px}
+.card-excerpt{font-size:.9rem;line-height:1.7;color:var(--light);font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;opacity:.8}
+.card-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-author{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted)}
+.read-more{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:2px;color:var(--red);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.read-more:hover{color:var(--orange)}
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;border:1px dashed var(--border)}
+.empty-state-icon{font-size:3rem;margin-bottom:16px}
+.empty-title{font-family:'Oswald',sans-serif;font-size:1.1rem;text-transform:uppercase;color:var(--muted)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border);max-width:720px;width:100%;max-height:88vh;overflow-y:auto;position:relative;border-top:3px solid var(--red)}
+.modal-box::-webkit-scrollbar{width:3px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--red)}
+.modal-header{padding:28px 32px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.modal-close{font-family:'Roboto Mono',monospace;font-size:.72rem;color:var(--muted);background:transparent;border:1px solid var(--border);padding:6px 14px;cursor:pointer;transition:all .2s;flex-shrink:0;text-transform:uppercase;letter-spacing:1px}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-cat{font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:8px}
+.modal-title{font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;text-transform:uppercase;color:var(--white);line-height:1.2;margin-bottom:8px}
+.modal-meta{font-family:'Roboto Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:0}
+.modal-meta span{color:var(--light)}
+.modal-body{padding:24px 32px 32px;font-size:.98rem;line-height:1.85;color:var(--light);font-weight:300}
+.modal-body p{margin-bottom:16px}
+.modal-cover{width:100%;height:280px;object-fit:cover;display:block}
+
+/* ── ADMIN ── */
+.admin-zone{margin-top:80px;border-top:1px solid var(--border);padding-top:64px}
+.admin-lock{border:1px solid rgba(232,0,28,.2);background:rgba(232,0,28,.02);padding:48px;text-align:center;position:relative;overflow:hidden}
+.admin-lock::before{content:'RESTRICTED';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:'Oswald',sans-serif;font-size:6rem;font-weight:700;color:rgba(232,0,28,.04);pointer-events:none;white-space:nowrap;user-select:none}
+.lock-icon{font-size:2.2rem;margin-bottom:14px}
+.lock-title{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:3px;text-transform:uppercase}
+.lock-sub{font-family:'Roboto Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:2px;margin-bottom:28px}
+.lock-form{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:360px;margin:0 auto}
+.lock-input-wrap{display:flex;align-items:center;gap:10px;width:100%;border:1px solid rgba(232,0,28,.3);background:rgba(0,0,0,.5);padding:0 16px}
+.lock-input-wrap span{font-family:'Roboto Mono',monospace;font-size:.78rem;color:var(--red);white-space:nowrap}
+.lock-input{font-family:'Roboto Mono',monospace;font-size:.78rem;color:var(--white);background:transparent;border:none;outline:none;flex:1;padding:14px 0;letter-spacing:3px}
+.lock-input::placeholder{color:var(--muted);letter-spacing:1px}
+.lock-btn{font-family:'Oswald',sans-serif;font-size:.9rem;letter-spacing:4px;color:var(--white);background:var(--red);border:none;padding:14px 48px;cursor:pointer;text-transform:uppercase;transition:background .2s;width:100%}
+.lock-btn:hover{background:var(--orange)}
+.lock-error{font-family:'Roboto Mono',monospace;font-size:.68rem;color:var(--red);letter-spacing:2px;display:none}
+.lock-error.show{display:block}
+.lock-attempts{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted)}
+.admin-panel{display:none}
+.admin-panel.unlocked{display:block}
+.admin-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px;padding:18px 24px;border:1px solid rgba(232,0,28,.3);background:rgba(232,0,28,.04)}
+.admin-badge{display:flex;align-items:center;gap:12px}
+.admin-dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 1s infinite}
+.admin-title{font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;color:var(--white);letter-spacing:3px;text-transform:uppercase}
+.admin-sub{font-family:'Roboto Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:2px}
+.admin-logout{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--red);background:transparent;border:1px solid rgba(232,0,28,.3);padding:8px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.admin-logout:hover{background:rgba(232,0,28,.1)}
+.blog-form{border:1px solid var(--border);background:var(--bg2);overflow:hidden}
+.blog-form-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:8px}
+.form-dot{width:10px;height:10px;border-radius:50%}
+.form-bar-title{font-family:'Roboto Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:8px}
+.blog-form-body{padding:32px}
+.form-row{margin-bottom:22px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.form-label{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:3px;color:var(--red);text-transform:uppercase;display:block;margin-bottom:8px}
+.form-req{color:#ff8800;margin-left:4px}
+.form-input{width:100%;font-family:'Roboto Mono',monospace;font-size:.8rem;color:var(--white);background:rgba(0,0,0,.4);border:1px solid var(--border);outline:none;padding:11px 14px;transition:border-color .2s}
+.form-input:focus{border-color:var(--red)}
+.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;font-family:'Roboto Mono',monospace;font-size:.8rem;color:var(--white);background:rgba(0,0,0,.8);border:1px solid var(--border);outline:none;padding:11px 14px;cursor:pointer;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23E8001C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:rgba(0,0,0,.8)}
+.form-select:focus{border-color:var(--red)}
+.form-select option{background:#111;color:#fff}
+.form-textarea{width:100%;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:300;color:var(--white);background:rgba(0,0,0,.4);border:1px solid var(--border);outline:none;padding:12px 14px;resize:vertical;min-height:200px;transition:border-color .2s;line-height:1.7}
+.form-textarea:focus{border-color:var(--red)}
+.form-textarea::placeholder{color:var(--muted)}
+.char-count{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted);text-align:right;margin-top:4px}
+.char-count span{color:var(--white)}
+.form-preview{border:1px solid var(--border);background:rgba(0,0,0,.3);padding:18px;margin-bottom:22px;min-height:72px}
+.form-preview-label{font-family:'Roboto Mono',monospace;font-size:.58rem;letter-spacing:3px;color:var(--muted);margin-bottom:8px}
+.form-preview-text{font-size:.9rem;line-height:1.65;color:var(--light);font-style:italic;opacity:.7}
+/* ── PHOTO UPLOAD ── */
+.photo-upload-area{border:2px dashed rgba(255,255,255,.12);background:rgba(255,255,255,.02);transition:border-color .2s,background .2s}
+.photo-upload-area:hover{border-color:rgba(232,0,28,.4);background:rgba(232,0,28,.02)}
+.photo-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;cursor:pointer;gap:8px}
+.photo-icon{font-size:1.8rem;opacity:.5}
+.photo-text{font-family:'Roboto Mono',monospace;font-size:.72rem;color:var(--light);letter-spacing:2px;text-transform:uppercase}
+.photo-hint{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted)}
+.photo-preview-wrap{position:relative}
+.photo-preview-wrap img{width:100%;height:220px;object-fit:cover;display:block}
+.photo-remove-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:'Roboto Mono',monospace;font-size:.6rem;padding:5px 12px;cursor:pointer;letter-spacing:1px;transition:background .2s;text-transform:uppercase}
+.photo-remove-btn:hover{background:rgba(232,0,28,.8);border-color:var(--red)}
+.form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.form-submit{font-family:'Oswald',sans-serif;font-size:.85rem;letter-spacing:3px;color:var(--white);background:var(--red);border:none;padding:13px 36px;cursor:pointer;text-transform:uppercase;transition:background .2s}
+.form-submit:hover{background:var(--orange)}
+.form-reset{font-family:'Roboto Mono',monospace;font-size:.72rem;letter-spacing:2px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:13px 24px;cursor:pointer;text-transform:uppercase;transition:all .2s}
+.form-reset:hover{border-color:var(--muted);color:var(--white)}
+.form-status{font-family:'Roboto Mono',monospace;font-size:.7rem;color:#00cc44;display:none;letter-spacing:2px}
+.form-status.show{display:block}
+.admin-posts{margin-top:36px}
+.admin-posts-title{font-family:'Oswald',sans-serif;font-size:.85rem;color:var(--muted);letter-spacing:3px;margin-bottom:14px;text-transform:uppercase}
+.admin-post-row{display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--border);background:var(--bg3);margin-bottom:6px;flex-wrap:wrap}
+.admin-post-title-cell{flex:1;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:500;color:var(--white);min-width:180px}
+.admin-post-cat-cell{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--red);border:1px solid rgba(232,0,28,.2);padding:2px 8px}
+.admin-post-date-cell{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--muted)}
+.admin-del-btn{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--red);background:transparent;border:1px solid rgba(232,0,28,.25);padding:4px 10px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.admin-del-btn:hover{background:rgba(232,0,28,.1)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;background:var(--bg)}
+.footer-copy{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:2px;color:var(--muted)}
+.footer-copy span{color:var(--white)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:'Roboto Mono',monospace;font-size:.62rem;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--red)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){nav{padding:0 20px}.hero{padding:0 24px 60px}.hero-metrics{gap:24px}.main{padding:60px 20px 80px}.form-row-2{grid-template-columns:1fr}footer{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+
+<!-- HUB OVERLAY -->
+<div class="hub-overlay" id="hub-overlay" onclick="closeHubOutside(event)">
+  <a href="index.html" class="hub-back">Back to Portfolio</a>
+  <button class="hub-close" onclick="closeHub()">✕ Close</button>
+  <div class="hub-inner">
+    <div class="hub-label">// Life Beyond the NOC</div>
+    <div class="hub-title">Choose Your World</div>
+    <div class="hub-cards">
+      <a href="fitness.html" class="hub-card hc-fitness current">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🏃</div>
+        <div class="hub-card-name">Fitness</div>
+        <div class="hub-card-desc">Training logs, running journey &amp; performance goals</div>
+        <div class="hub-card-cta">You Are Here</div>
+      </a>
+      <a href="travel.html" class="hub-card hc-travel">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">✈</div>
+        <div class="hub-card-name">Travel</div>
+        <div class="hub-card-desc">Destinations, road trips &amp; solo adventures</div>
+        <div class="hub-card-cta">Explore →</div>
+      </a>
+      <a href="lifestyle.html" class="hub-card hc-lifestyle">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">✦</div>
+        <div class="hub-card-name">Lifestyle</div>
+        <div class="hub-card-desc">Habits, books &amp; everyday reflections</div>
+        <div class="hub-card-cta">Explore →</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">RK<span>.</span>FIT</a>
+  <div class="nav-right">
+    <div class="nav-tag">Training Active</div>
+    <button class="hub-btn" onclick="openHub()" title="Switch section">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-line"></div>
+  <div class="hero-line"></div>
+  <div class="hero-stat-bg">FIT</div>
+  <div class="hero-tag">// Training Log &amp; Performance</div>
+  <h1 class="hero-title">Push<span>Harder.</span></h1>
+  <p class="hero-desc">A network engineer's approach to fitness — systematic, data-driven, consistent. Running, strength training, and the mindset behind building a body that keeps up with the job.</p>
+  <div class="hero-metrics">
+    <div class="metric"><div class="metric-val">5<span>km</span></div><div class="metric-label">Personal Best</div></div>
+    <div class="metric"><div class="metric-val">5<span>×</span></div><div class="metric-label">Weekly Sessions</div></div>
+    <div class="metric"><div class="metric-val">+8<span>kg</span></div><div class="metric-label">Bench Press</div></div>
+    <div class="metric"><div class="metric-val">6<span>mo</span></div><div class="metric-label">Streak</div></div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</div>
+
+<main class="main">
+  <div style="margin-bottom:48px" class="reveal">
+    <div class="section-label">// Training Journal</div>
+    <h2 class="section-title">Latest <span>Posts</span></h2>
+  </div>
+  <div class="filter-bar reveal">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-cat="all" onclick="filterPosts('all',this)">All</button>
+    <button class="filter-btn" data-cat="Running" onclick="filterPosts('Running',this)">Running</button>
+    <button class="filter-btn" data-cat="Strength" onclick="filterPosts('Strength',this)">Strength</button>
+    <button class="filter-btn" data-cat="Nutrition" onclick="filterPosts('Nutrition',this)">Nutrition</button>
+    <button class="filter-btn" data-cat="Mindset" onclick="filterPosts('Mindset',this)">Mindset</button>
+    <div class="filter-spacer"></div>
+    <div class="post-count"><span id="post-count">0</span> posts</div>
+  </div>
+  <div class="blog-grid reveal" id="blog-grid"></div>
+
+  <!-- ADMIN -->
+  <div class="admin-zone reveal">
+    <div style="margin-bottom:36px">
+      <div class="section-label">// Admin Only</div>
+      <h2 class="section-title">Add a <span>Post</span></h2>
+    </div>
+    <div class="admin-lock" id="admin-lock">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">Admin Access Required</div>
+      <div class="lock-sub">Enter administrator password to continue</div>
+      <div class="lock-form">
+        <div class="lock-input-wrap">
+          <span>passwd:</span>
+          <input class="lock-input" id="admin-pw" type="password" placeholder="enter password..." autocomplete="off" onkeydown="if(event.key==='Enter')tryLogin()"/>
+        </div>
+        <button class="lock-btn" onclick="tryLogin()">Authenticate</button>
+        <div class="lock-error" id="lock-error">⚠ Access Denied — Incorrect password</div>
+        <div class="lock-attempts" id="lock-attempts"></div>
+      </div>
+    </div>
+    <div class="admin-panel" id="admin-panel">
+      <div class="admin-header">
+        <div class="admin-badge"><div class="admin-dot"></div><div><div class="admin-title">Admin Session Active</div><div class="admin-sub">Fitness Blog — Write access granted</div></div></div>
+        <button class="admin-logout" onclick="logout()">Logout</button>
+      </div>
+      <div class="blog-form">
+        <div class="blog-form-bar">
+          <div class="form-dot" style="background:#ff5f56"></div><div class="form-dot" style="background:#ffbd2e"></div><div class="form-dot" style="background:#27c93f"></div>
+          <span class="form-bar-title">new_post.sh — Fitness Editor</span>
+        </div>
+        <div class="blog-form-body">
+          <div class="form-row">
+            <label class="form-label" for="post-title">Post Title <span class="form-req">*</span></label>
+            <input class="form-input" id="post-title" type="text" placeholder="e.g. Week 8 — First 5K Without Stopping" maxlength="120" oninput="updatePreview()"/>
+          </div>
+          <div class="form-row-2">
+            <div>
+              <label class="form-label" for="post-cat">Category <span class="form-req">*</span></label>
+              <select class="form-select" id="post-cat">
+                <option value="">— Select —</option>
+                <option value="Running">Running</option>
+                <option value="Strength">Strength</option>
+                <option value="Nutrition">Nutrition</option>
+                <option value="Mindset">Mindset</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="post-date">Date <span class="form-req">*</span></label>
+              <input class="form-input" id="post-date" type="date"/>
+            </div>
+          </div>
+          <!-- COVER PHOTO UPLOAD -->
+          <div class="form-row">
+            <label class="form-label">Cover Photo</label>
+            <input type="file" id="post-image" accept="image/*" style="display:none" onchange="previewImage(this)"/>
+            <div class="photo-upload-area" id="photo-upload-area">
+              <div class="photo-trigger" id="photo-trigger" onclick="document.getElementById('post-image').click()">
+                <div class="photo-icon">📷</div>
+                <div class="photo-text">Click to Upload Image</div>
+                <div class="photo-hint">JPG · PNG · WebP — displayed at top of post card</div>
+              </div>
+              <div class="photo-preview-wrap" id="photo-preview-wrap" style="display:none">
+                <img id="photo-preview-img" src="" alt="Cover preview"/>
+                <button class="photo-remove-btn" onclick="removeImage()">✕ Remove</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="post-excerpt">Excerpt <span class="form-req">*</span></label>
+            <input class="form-input" id="post-excerpt" type="text" placeholder="Short summary shown on the card..." maxlength="200" oninput="updatePreview()"/>
+            <div class="char-count"><span id="excerpt-chars">0</span> / 200</div>
+          </div>
+          <div class="form-preview"><div class="form-preview-label">// Preview</div><div class="form-preview-text" id="preview-text">Your excerpt will appear here…</div></div>
+          <div class="form-row">
+            <label class="form-label" for="post-content">Content <span class="form-req">*</span></label>
+            <textarea class="form-textarea" id="post-content" placeholder="Write your post here..." oninput="countWords()"></textarea>
+            <div class="char-count"><span id="word-count">0</span> words</div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="post-tags">Tags</label>
+            <input class="form-input" id="post-tags" type="text" placeholder="e.g. running, c25k, training"/>
+          </div>
+          <div class="form-actions">
+            <button class="form-submit" onclick="publishPost()">Publish Post</button>
+            <button class="form-reset" onclick="resetForm()">Clear</button>
+            <div class="form-status" id="form-status">✓ Published successfully!</div>
+          </div>
+        </div>
+      </div>
+      <div class="admin-posts"><div class="admin-posts-title">// Manage Posts</div><div id="admin-post-rows"></div></div>
+    </div>
+  </div>
+</main>
+
+<!-- READ MODAL -->
+<div class="modal-overlay" id="blog-modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div id="modal-cover-wrap"></div>
+    <div class="modal-header">
+      <div style="flex:1">
+        <div class="modal-cat" id="modal-cat"></div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-meta" id="modal-meta"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕ Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2025 <span>Ranjeet Kumar</span></div>
+  <div class="footer-links">
+    <a href="index.html">Portfolio</a>
+    <a href="blogs.html">Tech Blog</a>
+    <a href="mailto:ranjeethkumar054@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const SEED_POSTS=[
+  {id:1,title:"How I Went From 0 to 5K: A Network Engineer's Running Journey",category:"Running",date:"2025-03-22",
+   image:"https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=800&auto=format&fit=crop&q=70",
+   excerpt:"Six months ago I couldn't run 500 metres without stopping. Here's the honest account of how I built a running habit around 10-hour network shifts.",
+   content:`Starting to run when you spend most of your day sitting in a NOC, staring at network diagrams, sounds straightforward. It wasn't.\n\nThe Problem With My Baseline\nWhen I started in October 2024, my resting heart rate was too high and I was getting winded climbing two flights of stairs. The job demands mental energy but almost zero physical movement.\n\nThe Approach That Actually Worked\nI used the Couch to 5K (C25K) framework — structured, like a good network protocol. Three runs per week, alternating walking and running intervals, progressively loaded over eight weeks.\n\nKey adjustments:\n• Running at 5:30 AM before shifts. After a long troubleshooting session, willpower is gone.\n• Keeping the first 4 weeks embarrassingly slow — Zone 2 heart rate, conversational pace.\n• Not skipping rest days. Recovery is not optional at 30+.\n\nWhat Changed\nBy week 8 I ran my first continuous 5K — 35 minutes, no stopping. The mental shift was bigger than the physical one. Building consistency in a domain you're bad at bleeds into other areas.\n\nCurrent status: 4x per week, targeting a 10K by mid-2025.`,
+   tags:["running","fitness","c25k","habits"],author:"Ranjeet Kumar"},
+  {id:2,title:"The Gym-Desk Balance: Fitting Strength Training Into a NOC Schedule",category:"Strength",date:"2025-01-14",
+   image:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop&q=70",
+   excerpt:"Shift work, on-call weeks, and incident response don't mix well with a fixed gym schedule. Here's the system that finally stuck after months of trial.",
+   content:`If you work in network operations, you know the pattern: your schedule is predictable until it isn't. A P1 incident at 11 PM ruins tomorrow's 6 AM gym session.\n\nWhat Didn't Work\n• Morning gym before shifts: One bad on-call night and the whole week falls apart\n• Evening gym: After a full NOC shift, motivation is near zero\n• Rigid 5-day programmes: Miss two sessions and the programme feels broken\n\nThe System I Use Now\nI treat training like network redundancy — build in failure tolerance.\n\n3 hard sessions per week, minimum. Two upper body push/pull days and one lower body day.\n\nMovement minimums on other days. 20-minute walks count. The goal is never going more than two days with zero physical activity.\n\nFlexible scheduling. Plan the week on Sunday based on the on-call roster.\n\nResults After 6 Months\n+8kg on bench press, -4kg body weight, improved fatigue management during long shifts.`,
+   tags:["strength","gym","noc","scheduling"],author:"Ranjeet Kumar"},
+  {id:3,title:"Zone 2 Training: The Boring Protocol That Actually Works",category:"Running",date:"2024-12-05",
+   image:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&auto=format&fit=crop&q=70",
+   excerpt:"I spent three months running too hard and getting slower. Dropping intensity and staying in Zone 2 was the counterintuitive fix that changed everything.",
+   content:`Every engineer I know who picks up running makes the same mistake: running too fast, all the time. I certainly did.\n\nWhat Zone 2 Actually Means\nZone 2 is roughly 60–70% of your maximum heart rate — a pace where you can hold a full conversation. For me, that felt embarrassingly slow at first.\n\nWhy It Works\nAt Zone 2, you're primarily training your aerobic base — mitochondrial density, heart stroke volume, fat oxidation efficiency. These are the foundations that make faster running sustainable.\n\nRunning fast all the time is like hammering the CPU at 100% constantly — short bursts of performance but degrading the underlying system.\n\nThe Protocol\n80% of runs: pure Zone 2, HR below 145 bpm\n20% of runs: quality sessions (tempo intervals, Parkrun efforts)\n\nAfter 3 Months\nMy easy pace dropped from 7:30/km to 6:15/km at the same heart rate. Injury rate: zero. The boring protocol works.`,
+   tags:["running","zone2","aerobic","protocol"],author:"Ranjeet Kumar"}
+];
+let posts=[...SEED_POSTS];let nextId=posts.length+1;
+let currentImage=null;
+
+function openHub(){document.getElementById('hub-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeHub(){document.getElementById('hub-overlay').classList.remove('open');document.body.style.overflow='';}
+function closeHubOutside(e){if(e.target===document.getElementById('hub-overlay'))closeHub();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeHub();closeModalBtn();}});
+
+function previewImage(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    currentImage=ev.target.result;
+    document.getElementById('photo-preview-img').src=currentImage;
+    document.getElementById('photo-preview-wrap').style.display='block';
+    document.getElementById('photo-trigger').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+function removeImage(){
+  currentImage=null;
+  document.getElementById('post-image').value='';
+  document.getElementById('photo-preview-wrap').style.display='none';
+  document.getElementById('photo-trigger').style.display='flex';
+}
+
+function formatDate(d){const[y,m,day]=d.split('-');return new Date(y,m-1,day).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+function renderGrid(filtered){
+  const grid=document.getElementById('blog-grid');
+  document.getElementById('post-count').textContent=filtered.length;
+  if(!filtered.length){grid.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🏋️</div><div class="empty-title">NO POSTS FOUND</div></div>`;return;}
+  grid.innerHTML=filtered.map(p=>`
+    <div class="blog-card">
+      ${p.image?`<div class="card-img"><img src="${p.image}" alt="" loading="lazy"/></div>`:''}
+      <div class="card-cat-bar"></div>
+      <div class="card-header"><span class="card-cat">${p.category}</span><span class="card-date">${formatDate(p.date)}</span></div>
+      <div class="card-body"><div class="card-title">${p.title}</div><div class="card-excerpt">${p.excerpt}</div></div>
+      <div class="card-footer"><div class="card-author">${p.author}</div><a class="read-more" href="javascript:void(0)" onclick="openPost(${p.id})">Read →</a></div>
+    </div>`).join('');
+}
+let currentFilter='all';
+function filterPosts(cat,btn){currentFilter=cat;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid(cat==='all'?posts:posts.filter(p=>p.category===cat));}
+function refreshGrid(){renderGrid(currentFilter==='all'?posts:posts.filter(p=>p.category===currentFilter));}
+
+function openPost(id){
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  document.getElementById('modal-cover-wrap').innerHTML=p.image?`<img class="modal-cover" src="${p.image}" alt=""/>` :'';
+  document.getElementById('modal-cat').textContent=p.category;
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-meta').innerHTML=`<span>${formatDate(p.date)}</span> · ${p.author} · ${p.tags.map(t=>'#'+t).join(' ')}`;
+  document.getElementById('modal-body').innerHTML=p.content.split('\n\n').map(para=>`<p>${para.replace(/\n/g,'<br/>')}</p>`).join('');
+  document.getElementById('blog-modal').classList.add('open');document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('blog-modal'))closeModalBtn();}
+function closeModalBtn(){document.getElementById('blog-modal').classList.remove('open');document.body.style.overflow='';}
+
+const ADMIN_PASSWORD='admin123';let attempts=0;let locked=false;let adminAuthenticated=false;
+function tryLogin(){if(locked)return;const pw=document.getElementById('admin-pw').value;if(pw===ADMIN_PASSWORD){adminAuthenticated=true;document.getElementById('admin-lock').style.display='none';document.getElementById('admin-panel').classList.add('unlocked');renderAdminList();document.getElementById('post-date').value=new Date().toISOString().split('T')[0];}else{attempts++;document.getElementById('lock-error').classList.add('show');document.getElementById('admin-pw').value='';if(attempts>=5){locked=true;document.getElementById('lock-attempts').textContent='Too many attempts. Locked 30s.';document.querySelector('.lock-btn').disabled=true;setTimeout(()=>{locked=false;attempts=0;document.getElementById('lock-attempts').textContent='';document.querySelector('.lock-btn').disabled=false;},30000);}else{document.getElementById('lock-attempts').textContent=`${5-attempts} attempt(s) remaining`;}}}
+function logout(){adminAuthenticated=false;document.getElementById('admin-panel').classList.remove('unlocked');document.getElementById('admin-lock').style.display='';document.getElementById('admin-pw').value='';document.getElementById('lock-error').classList.remove('show');document.getElementById('lock-attempts').textContent='';attempts=0;locked=false;}
+function updatePreview(){const ex=document.getElementById('post-excerpt').value;document.getElementById('preview-text').textContent=ex||'Your excerpt will appear here…';document.getElementById('excerpt-chars').textContent=ex.length;}
+function countWords(){const c=document.getElementById('post-content').value;document.getElementById('word-count').textContent=c.trim()?c.trim().split(/\s+/).length:0;}
+function resetForm(){['post-title','post-excerpt','post-content','post-tags'].forEach(id=>document.getElementById(id).value='');document.getElementById('post-cat').value='';document.getElementById('post-date').value=new Date().toISOString().split('T')[0];removeImage();updatePreview();countWords();document.getElementById('form-status').classList.remove('show');}
+function publishPost(){
+  if(!adminAuthenticated){alert('Not authenticated.');return;}
+  const title=document.getElementById('post-title').value.trim();const cat=document.getElementById('post-cat').value;const date=document.getElementById('post-date').value;const excerpt=document.getElementById('post-excerpt').value.trim();const content=document.getElementById('post-content').value.trim();const tagsRaw=document.getElementById('post-tags').value;
+  if(!title||!cat||!date||!excerpt||!content){alert('Fill all required fields.');return;}
+  posts.unshift({id:nextId++,title,category:cat,date,excerpt,content,image:currentImage,tags:tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean),author:'Ranjeet Kumar'});
+  refreshGrid();renderAdminList();resetForm();
+  const st=document.getElementById('form-status');st.classList.add('show');setTimeout(()=>st.classList.remove('show'),3500);
+}
+function renderAdminList(){
+  const c=document.getElementById('admin-post-rows');
+  if(!posts.length){c.innerHTML='<div style="font-family:Roboto Mono,monospace;font-size:.72rem;color:#666;padding:14px">No posts yet.</div>';return;}
+  c.innerHTML=posts.map(p=>`<div class="admin-post-row"><div class="admin-post-title-cell">${p.title}</div><div class="admin-post-cat-cell">${p.category}</div><div class="admin-post-date-cell">${formatDate(p.date)}</div><button class="admin-del-btn" onclick="deletePost(${p.id})">Delete</button></div>`).join('');
+}
+function deletePost(id){if(!confirm('Delete this post?'))return;posts=posts.filter(p=>p.id!==id);refreshGrid();renderAdminList();}
+
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+renderGrid(posts);
+</script>
+</body>
+</html>

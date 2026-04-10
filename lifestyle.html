@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lifestyle — Ranjeet Kumar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#1A1815;--bg2:#222019;--bg3:#2B2822;
+  --sage:#6AAF84;--sage2:#87C49E;--sage-dim:rgba(106,175,132,.12);
+  --terra:#C07858;--terra2:#D4937A;
+  --ink:#EAE3D8;--body:#BEB4A8;--muted:#6E665E;--dim:#3A3530;
+  --border:rgba(234,227,216,.09);--shadow:rgba(0,0,0,.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body);font-family:'DM Sans',sans-serif;font-size:16px;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(26,24,21,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);letter-spacing:1px;text-decoration:none;font-style:italic}
+.nav-logo span{color:var(--sage)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-tag{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--sage);letter-spacing:2px;text-transform:uppercase}
+.hub-btn{background:transparent;border:none;cursor:pointer;padding:6px 8px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.hub-btn span{display:block;width:22px;height:2px;background:var(--muted);transition:all .3s}
+.hub-btn:hover span{background:var(--sage)}
+.hub-btn:hover span:nth-child(1){transform:translateX(4px)}
+.hub-btn:hover span:nth-child(3){transform:translateX(-4px)}
+
+/* ── HUB OVERLAY ── */
+.hub-overlay{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background:rgba(4,3,2,.96);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s ease}
+.hub-overlay.open{opacity:1;pointer-events:all}
+.hub-close{position:absolute;top:24px;right:32px;background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--muted);font-family:'DM Mono',monospace;font-size:.72rem;padding:8px 18px;cursor:pointer;transition:all .2s;letter-spacing:2px;text-transform:uppercase}
+.hub-close:hover{border-color:var(--sage);color:var(--sage)}
+.hub-back{position:absolute;top:26px;left:48px;font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s;display:flex;align-items:center;gap:8px}
+.hub-back:hover{color:var(--ink)}
+.hub-back::before{content:'←'}
+.hub-inner{width:100%;max-width:1000px;padding:0 32px;text-align:center}
+.hub-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:5px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.hub-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--ink);margin-bottom:48px;font-style:italic}
+.hub-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.hub-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-decoration:none;position:relative;overflow:hidden;transition:transform .3s ease;min-height:320px}
+.hub-card:hover{transform:translateY(-6px)}
+.hub-card-glow{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80%;height:50%;border-radius:50%;filter:blur(60px);opacity:0;transition:opacity .4s}
+.hub-card:hover .hub-card-glow{opacity:.6}
+.hub-card-icon{font-size:2.8rem;margin-bottom:18px;transition:transform .3s}
+.hub-card:hover .hub-card-icon{transform:scale(1.15)}
+.hub-card-name{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px}
+.hub-card-desc{font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:300;line-height:1.65;margin-bottom:24px;max-width:200px;opacity:.7}
+.hub-card-cta{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;padding:9px 20px;border:1px solid currentColor;opacity:.75;transition:all .2s}
+.hub-card:hover .hub-card-cta{opacity:1}
+.hc-fitness{background:#0D0D0D;color:#fff;border:1px solid rgba(232,0,28,.15)}
+.hc-fitness .hub-card-glow{background:#E8001C}
+.hc-fitness .hub-card-name{color:#FF2200}
+.hc-fitness .hub-card-cta{border-color:rgba(255,34,0,.5);color:#FF2200}
+.hc-fitness:hover .hub-card-cta{background:#FF2200;color:#0D0D0D}
+.hc-travel{background:#0A0805;color:#EDE4D0;border:1px solid rgba(212,168,83,.12)}
+.hc-travel .hub-card-glow{background:#C9963E}
+.hc-travel .hub-card-name{color:#D4A853}
+.hc-travel .hub-card-cta{border-color:rgba(212,168,83,.5);color:#D4A853}
+.hc-travel:hover .hub-card-cta{background:#D4A853;color:#0A0805}
+.hc-lifestyle{background:#141210;color:var(--ink);border:1px solid rgba(106,175,132,.2)}
+.hc-lifestyle .hub-card-glow{background:#4A8C6A}
+.hc-lifestyle .hub-card-name{color:var(--sage)}
+.hc-lifestyle .hub-card-cta{border-color:rgba(106,175,132,.5);color:var(--sage)}
+.hc-lifestyle:hover .hub-card-cta{background:var(--sage);color:#080C09}
+.hc-lifestyle.current{border-color:rgba(106,175,132,.4);background:#111310}
+@media(max-width:700px){.hub-cards{grid-template-columns:1fr}.hub-card{min-height:auto;padding:32px 20px}.hub-inner{padding:0 16px}.hub-title{margin-bottom:28px}}
+
+/* ── HERO ── */
+.hero{min-height:92vh;display:flex;align-items:center;padding:80px 80px 60px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-col{max-width:620px;position:relative;z-index:1}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:4px;color:var(--sage);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--sage)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,8vw,6.5rem);font-weight:700;line-height:.92;color:var(--ink);margin-bottom:28px;letter-spacing:-1px}
+.hero-title em{color:var(--sage);font-style:italic;display:block}
+.hero-desc{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:300;color:var(--body);line-height:1.85;max-width:500px;margin-bottom:44px}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap}
+.pill{font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border:1px solid var(--border);color:var(--muted);background:transparent;transition:all .2s}
+.pill:hover{border-color:var(--sage);color:var(--sage);background:var(--sage-dim)}
+.hero-deco{position:absolute;top:0;right:0;bottom:0;width:38%;background:linear-gradient(180deg,rgba(106,175,132,.06),rgba(106,175,132,.03));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-deco-inner{position:relative;width:100%;height:100%}
+.hero-quote{position:absolute;bottom:80px;left:40px;right:40px}
+.hero-quote-text{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;line-height:1.6;color:var(--sage);margin-bottom:8px;opacity:.8}
+.hero-quote-attr{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.hero-circle{position:absolute;top:60px;left:50%;transform:translateX(-50%);width:220px;height:220px;border-radius:50%;border:1px solid rgba(106,175,132,.12);display:flex;align-items:center;justify-content:center;font-size:5rem}
+.hero-ring{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:300px;height:300px;border-radius:50%;border:1px solid rgba(106,175,132,.05)}
+
+/* ── MAIN ── */
+.main{max-width:1120px;margin:0 auto;padding:80px 48px 100px}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:4px;color:var(--sage);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.section-eyebrow::before{content:'';width:20px;height:1px;background:var(--sage)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--ink);margin-bottom:48px;line-height:1.1}
+.section-title em{color:var(--sage);font-style:italic}
+
+/* ── FILTER ── */
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:40px;padding:14px 20px;background:var(--bg2);border:1px solid var(--border)}
+.filter-label{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;font-weight:500}
+.filter-btn{font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{border-color:var(--sage);color:var(--sage);background:var(--sage-dim)}
+.filter-spacer{flex:1}
+.post-count{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted)}
+.post-count span{color:var(--ink)}
+
+/* ── GRID ── */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+.blog-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s;display:flex;flex-direction:column;box-shadow:0 2px 8px var(--shadow)}
+.blog-card:hover{border-color:rgba(106,175,132,.35);transform:translateY(-3px);box-shadow:0 12px 32px var(--shadow)}
+.card-img{width:100%;height:200px;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
+.blog-card:hover .card-img img{transform:scale(1.05)}
+.card-top{height:2px;background:linear-gradient(90deg,var(--sage),var(--sage2))}
+.card-header{padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center}
+.card-cat{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--sage);background:var(--sage-dim);border:1px solid rgba(106,175,132,.2);padding:3px 10px}
+.card-date{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted)}
+.card-body{padding:16px 24px 20px;flex:1}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3}
+.card-excerpt{font-size:.9rem;line-height:1.75;color:var(--body);font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-author{font-family:'DM Sans',sans-serif;font-size:.64rem;color:var(--muted)}
+.read-more{font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:1.5px;color:var(--sage);text-decoration:none;text-transform:uppercase;transition:color .2s;font-weight:500}
+.read-more:hover{color:var(--terra)}
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;border:1px dashed var(--border)}
+.empty-state-icon{font-size:3rem;margin-bottom:16px}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--muted)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--sage);max-width:720px;width:100%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.modal-box::-webkit-scrollbar{width:3px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--sage)}
+.modal-cover{width:100%;height:280px;object-fit:cover;display:block}
+.modal-header{padding:28px 32px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.modal-close{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--muted);background:transparent;border:1px solid var(--border);padding:6px 14px;cursor:pointer;transition:all .2s;flex-shrink:0;letter-spacing:1px}
+.modal-close:hover{border-color:var(--terra);color:var(--terra)}
+.modal-cat{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--sage);text-transform:uppercase;margin-bottom:8px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:8px}
+.modal-meta{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:0}
+.modal-meta span{color:var(--body)}
+.modal-body{padding:24px 32px 32px;font-size:1rem;line-height:1.9;color:var(--body);font-weight:300}
+.modal-body p{margin-bottom:18px}
+
+/* ── ADMIN ── */
+.admin-zone{margin-top:80px;border-top:1px solid var(--border);padding-top:64px}
+.admin-lock{border:1px solid rgba(106,175,132,.15);background:rgba(106,175,132,.03);padding:48px;text-align:center;position:relative;overflow:hidden}
+.admin-lock::before{content:'RESTRICTED';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:700;color:rgba(106,175,132,.04);pointer-events:none;white-space:nowrap;user-select:none}
+.lock-icon{font-size:2.2rem;margin-bottom:14px}
+.lock-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.lock-sub{font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);letter-spacing:1px;margin-bottom:28px}
+.lock-form{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:360px;margin:0 auto}
+.lock-input-wrap{display:flex;align-items:center;gap:10px;width:100%;border:1px solid rgba(106,175,132,.25);background:rgba(0,0,0,.3);padding:0 16px}
+.lock-input-wrap span{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--sage);white-space:nowrap;letter-spacing:1px}
+.lock-input{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--ink);background:transparent;border:none;outline:none;flex:1;padding:14px 0;letter-spacing:3px}
+.lock-input::placeholder{color:var(--muted);letter-spacing:1px}
+.lock-btn{font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:3px;color:var(--bg);background:var(--sage);border:none;padding:14px 48px;cursor:pointer;text-transform:uppercase;transition:background .2s;width:100%;font-weight:500}
+.lock-btn:hover{background:var(--sage2)}
+.lock-error{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--terra);letter-spacing:2px;display:none}
+.lock-error.show{display:block}
+.lock-attempts{font-family:'DM Sans',sans-serif;font-size:.64rem;color:var(--muted)}
+.admin-panel{display:none}
+.admin-panel.unlocked{display:block}
+.admin-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px;padding:18px 24px;border:1px solid rgba(106,175,132,.2);background:rgba(106,175,132,.04)}
+.admin-badge{display:flex;align-items:center;gap:12px}
+.admin-dot{width:8px;height:8px;border-radius:50%;background:var(--sage);animation:sdot 2s infinite}
+@keyframes sdot{0%,100%{opacity:1}50%{opacity:.3}}
+.admin-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ink)}
+.admin-sub{font-family:'DM Sans',sans-serif;font-size:.64rem;color:var(--muted);margin-top:2px}
+.admin-logout{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:8px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.admin-logout:hover{border-color:var(--terra);color:var(--terra)}
+.blog-form{border:1px solid var(--border);background:var(--bg2);overflow:hidden}
+.blog-form-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:8px}
+.form-dot{width:10px;height:10px;border-radius:50%}
+.form-bar-title{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:8px;letter-spacing:1px}
+.blog-form-body{padding:32px}
+.form-row{margin-bottom:22px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.form-label{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--sage);text-transform:uppercase;display:block;margin-bottom:8px;font-weight:500}
+.form-req{color:var(--terra);margin-left:4px}
+.form-input{width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:rgba(0,0,0,.25);border:1px solid var(--border);outline:none;padding:11px 14px;transition:border-color .2s}
+.form-input:focus{border-color:var(--sage)}
+.form-input::placeholder{color:var(--muted)}
+.form-select{width:100%;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:rgba(0,0,0,.4);border:1px solid var(--border);outline:none;padding:11px 14px;cursor:pointer;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236AAF84' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:rgba(0,0,0,.4)}
+.form-select:focus{border-color:var(--sage)}
+.form-select option{background:var(--bg2);color:var(--ink)}
+.form-textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:.96rem;font-weight:300;color:var(--ink);background:rgba(0,0,0,.25);border:1px solid var(--border);outline:none;padding:14px 16px;resize:vertical;min-height:200px;transition:border-color .2s;line-height:1.8}
+.form-textarea:focus{border-color:var(--sage)}
+.form-textarea::placeholder{color:var(--muted)}
+.char-count{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);text-align:right;margin-top:4px}
+.char-count span{color:var(--body)}
+.form-preview{border:1px solid var(--border);background:var(--sage-dim);padding:18px;margin-bottom:22px;min-height:72px}
+.form-preview-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:3px;color:var(--muted);margin-bottom:8px;text-transform:uppercase}
+.form-preview-text{font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:var(--body);font-style:italic}
+/* ── PHOTO UPLOAD ── */
+.photo-upload-area{border:2px dashed rgba(106,175,132,.2);background:rgba(106,175,132,.02);transition:border-color .2s,background .2s}
+.photo-upload-area:hover{border-color:rgba(106,175,132,.4);background:rgba(106,175,132,.04)}
+.photo-trigger{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;cursor:pointer;gap:8px}
+.photo-icon{font-size:1.8rem;opacity:.5}
+.photo-text{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--body);letter-spacing:2px;text-transform:uppercase}
+.photo-hint{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted)}
+.photo-preview-wrap{position:relative}
+.photo-preview-wrap img{width:100%;height:220px;object-fit:cover;display:block}
+.photo-remove-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:'DM Mono',monospace;font-size:.6rem;padding:5px 12px;cursor:pointer;letter-spacing:1px;transition:background .2s;text-transform:uppercase}
+.photo-remove-btn:hover{background:rgba(192,120,88,.8);border-color:var(--terra)}
+.form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.form-submit{font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:2px;color:var(--bg);background:var(--sage);border:none;padding:13px 36px;cursor:pointer;text-transform:uppercase;transition:background .2s;font-weight:500}
+.form-submit:hover{background:var(--sage2)}
+.form-reset{font-family:'DM Sans',sans-serif;font-size:.75rem;letter-spacing:1.5px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:13px 24px;cursor:pointer;text-transform:uppercase;transition:all .2s}
+.form-reset:hover{border-color:var(--terra);color:var(--terra)}
+.form-status{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--sage);display:none;letter-spacing:1.5px}
+.form-status.show{display:block}
+.admin-posts{margin-top:36px}
+.admin-posts-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--muted);margin-bottom:14px}
+.admin-post-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--border);background:var(--bg3);margin-bottom:6px;flex-wrap:wrap}
+.admin-post-title-cell{flex:1;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--ink);min-width:180px}
+.admin-post-cat-cell{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--sage);border:1px solid rgba(106,175,132,.2);padding:2px 8px}
+.admin-post-date-cell{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted)}
+.admin-del-btn{font-family:'DM Sans',sans-serif;font-size:.62rem;color:var(--terra);background:transparent;border:1px solid rgba(192,120,88,.2);padding:4px 10px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.admin-del-btn:hover{background:rgba(192,120,88,.08);border-color:var(--terra)}
+
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;background:var(--bg)}
+.footer-copy{font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:1.5px;color:var(--muted)}
+.footer-copy span{color:var(--ink)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:1.5px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--sage)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.hero{padding:100px 32px 60px}.hero-deco{display:none}}
+@media(max-width:768px){nav{padding:0 20px}.main{padding:60px 20px 80px}.form-row-2{grid-template-columns:1fr}footer{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+
+<!-- HUB OVERLAY -->
+<div class="hub-overlay" id="hub-overlay" onclick="closeHubOutside(event)">
+  <a href="index.html" class="hub-back">Back to Portfolio</a>
+  <button class="hub-close" onclick="closeHub()">✕ Close</button>
+  <div class="hub-inner">
+    <div class="hub-label">// Life Beyond the NOC</div>
+    <div class="hub-title">Choose Your World</div>
+    <div class="hub-cards">
+      <a href="fitness.html" class="hub-card hc-fitness">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">🏃</div>
+        <div class="hub-card-name">Fitness</div>
+        <div class="hub-card-desc">Training logs, running journey &amp; performance goals</div>
+        <div class="hub-card-cta">Explore →</div>
+      </a>
+      <a href="travel.html" class="hub-card hc-travel">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">✈</div>
+        <div class="hub-card-name">Travel</div>
+        <div class="hub-card-desc">Destinations, road trips &amp; solo adventures</div>
+        <div class="hub-card-cta">Explore →</div>
+      </a>
+      <a href="lifestyle.html" class="hub-card hc-lifestyle current">
+        <div class="hub-card-glow"></div>
+        <div class="hub-card-icon">✦</div>
+        <div class="hub-card-name">Lifestyle</div>
+        <div class="hub-card-desc">Habits, books &amp; everyday reflections</div>
+        <div class="hub-card-cta">You Are Here</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">RK<span>.</span>Life</a>
+  <div class="nav-right">
+    <div class="nav-tag">Slow Living</div>
+    <button class="hub-btn" onclick="openHub()" title="Switch section">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-col">
+    <div class="hero-eyebrow">Personal Journal</div>
+    <h1 class="hero-title">Live <em>Intentionally.</em></h1>
+    <p class="hero-desc">Thoughts on building better habits, reading more books, and navigating modern life as a network engineer in Bangalore. A record of the things that matter away from the screen.</p>
+    <div class="hero-pills">
+      <span class="pill">Habits</span>
+      <span class="pill">Books</span>
+      <span class="pill">Digital Life</span>
+      <span class="pill">Everyday</span>
+    </div>
+  </div>
+  <div class="hero-deco">
+    <div class="hero-deco-inner">
+      <div class="hero-ring"></div>
+      <div class="hero-circle">🌿</div>
+      <div class="hero-quote">
+        <div class="hero-quote-text">"The quality of a life is determined by its activities."</div>
+        <div class="hero-quote-attr">— Aristotle</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+  <div style="margin-bottom:48px" class="reveal">
+    <div class="section-eyebrow">Personal Journal</div>
+    <h2 class="section-title">Recent <em>Reflections</em></h2>
+  </div>
+  <div class="filter-bar reveal">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-cat="all" onclick="filterPosts('all',this)">All</button>
+    <button class="filter-btn" data-cat="Habits" onclick="filterPosts('Habits',this)">Habits</button>
+    <button class="filter-btn" data-cat="Books" onclick="filterPosts('Books',this)">Books</button>
+    <button class="filter-btn" data-cat="Digital" onclick="filterPosts('Digital',this)">Digital</button>
+    <button class="filter-btn" data-cat="Everyday" onclick="filterPosts('Everyday',this)">Everyday</button>
+    <div class="filter-spacer"></div>
+    <div class="post-count"><span id="post-count">0</span> entries</div>
+  </div>
+  <div class="blog-grid reveal" id="blog-grid"></div>
+
+  <!-- ADMIN -->
+  <div class="admin-zone reveal">
+    <div style="margin-bottom:36px">
+      <div class="section-eyebrow">Admin Only</div>
+      <h2 class="section-title">Add an <em>Entry</em></h2>
+    </div>
+    <div class="admin-lock" id="admin-lock">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">Admin Access Required</div>
+      <div class="lock-sub">Enter administrator password to continue</div>
+      <div class="lock-form">
+        <div class="lock-input-wrap">
+          <span>passwd:</span>
+          <input class="lock-input" id="admin-pw" type="password" placeholder="enter password..." autocomplete="off" onkeydown="if(event.key==='Enter')tryLogin()"/>
+        </div>
+        <button class="lock-btn" onclick="tryLogin()">Authenticate</button>
+        <div class="lock-error" id="lock-error">⚠ Access Denied — Incorrect password</div>
+        <div class="lock-attempts" id="lock-attempts"></div>
+      </div>
+    </div>
+    <div class="admin-panel" id="admin-panel">
+      <div class="admin-header">
+        <div class="admin-badge"><div class="admin-dot"></div><div><div class="admin-title">Admin Session Active</div><div class="admin-sub">Lifestyle Journal — Write access granted</div></div></div>
+        <button class="admin-logout" onclick="logout()">Logout</button>
+      </div>
+      <div class="blog-form">
+        <div class="blog-form-bar">
+          <div class="form-dot" style="background:#ff5f56"></div><div class="form-dot" style="background:#ffbd2e"></div><div class="form-dot" style="background:#27c93f"></div>
+          <span class="form-bar-title">new_entry.sh — Lifestyle Editor</span>
+        </div>
+        <div class="blog-form-body">
+          <div class="form-row">
+            <label class="form-label" for="post-title">Title <span class="form-req">*</span></label>
+            <input class="form-input" id="post-title" type="text" placeholder="e.g. Digital Minimalism — How I Reclaimed 2 Hours a Day" maxlength="120" oninput="updatePreview()"/>
+          </div>
+          <div class="form-row-2">
+            <div>
+              <label class="form-label" for="post-cat">Category <span class="form-req">*</span></label>
+              <select class="form-select" id="post-cat">
+                <option value="">— Select —</option>
+                <option value="Habits">Habits</option>
+                <option value="Books">Books</option>
+                <option value="Digital">Digital</option>
+                <option value="Everyday">Everyday</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="post-date">Date <span class="form-req">*</span></label>
+              <input class="form-input" id="post-date" type="date"/>
+            </div>
+          </div>
+          <!-- COVER PHOTO UPLOAD -->
+          <div class="form-row">
+            <label class="form-label">Cover Photo</label>
+            <input type="file" id="post-image" accept="image/*" style="display:none" onchange="previewImage(this)"/>
+            <div class="photo-upload-area" id="photo-upload-area">
+              <div class="photo-trigger" id="photo-trigger" onclick="document.getElementById('post-image').click()">
+                <div class="photo-icon">📷</div>
+                <div class="photo-text">Click to Upload Image</div>
+                <div class="photo-hint">JPG · PNG · WebP — displayed at top of post card</div>
+              </div>
+              <div class="photo-preview-wrap" id="photo-preview-wrap" style="display:none">
+                <img id="photo-preview-img" src="" alt="Cover preview"/>
+                <button class="photo-remove-btn" onclick="removeImage()">✕ Remove</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="post-excerpt">Excerpt <span class="form-req">*</span></label>
+            <input class="form-input" id="post-excerpt" type="text" placeholder="A short summary for the card..." maxlength="200" oninput="updatePreview()"/>
+            <div class="char-count"><span id="excerpt-chars">0</span> / 200</div>
+          </div>
+          <div class="form-preview"><div class="form-preview-label">Preview</div><div class="form-preview-text" id="preview-text">Your excerpt will appear here…</div></div>
+          <div class="form-row">
+            <label class="form-label" for="post-content">Entry <span class="form-req">*</span></label>
+            <textarea class="form-textarea" id="post-content" placeholder="Write your entry here..." oninput="countWords()"></textarea>
+            <div class="char-count"><span id="word-count">0</span> words</div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="post-tags">Tags</label>
+            <input class="form-input" id="post-tags" type="text" placeholder="e.g. habits, minimalism, morning-routine"/>
+          </div>
+          <div class="form-actions">
+            <button class="form-submit" onclick="publishPost()">Publish Entry</button>
+            <button class="form-reset" onclick="resetForm()">Clear</button>
+            <div class="form-status" id="form-status">✓ Published!</div>
+          </div>
+        </div>
+      </div>
+      <div class="admin-posts"><div class="admin-posts-title">Manage Entries</div><div id="admin-post-rows"></div></div>
+    </div>
+  </div>
+</main>
+
+<!-- READ MODAL -->
+<div class="modal-overlay" id="blog-modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div id="modal-cover-wrap"></div>
+    <div class="modal-header">
+      <div style="flex:1">
+        <div class="modal-cat" id="modal-cat"></div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-meta" id="modal-meta"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕ Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2025 <span>Ranjeet Kumar</span> — Personal Journal</div>
+  <div class="footer-links">
+    <a href="index.html">Portfolio</a>
+    <a href="blogs.html">Tech Blog</a>
+    <a href="mailto:ranjeethkumar054@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const SEED_POSTS=[
+  {id:1,title:"Digital Minimalism: How I Reclaimed 2 Hours Every Day",category:"Digital",date:"2024-12-20",
+   image:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=70",
+   excerpt:"I spent 10+ hours a day looking at screens for work, then realised I was spending another 3–4 on my phone for entertainment. Something had to change.",
+   content:`There's a specific irony in being a network engineer who thinks deeply about data traffic, bandwidth allocation, and quality of service — and then going home to consume whatever the algorithm feeds you.\n\nThe Audit\nI started by running Screen Time for two weeks without changing anything. The numbers were uncomfortable. 3.5 hours per day on the phone on average. Instagram, YouTube, news apps. None of it intentional.\n\nWhat I Changed\n1. Phone out of the bedroom. Bought a cheap alarm clock. This alone cut 45 minutes of passive scrolling per day.\n\n2. Removed all news apps. I read one newsletter on Sunday mornings instead. The world is roughly as chaotic whether I check every hour or once a week.\n\n3. Grayscale mode on the phone from 9 PM. Screens become dramatically less engaging without colour.\n\n4. One intentional streaming session per evening, max 90 minutes. I pick what I'm watching before opening Netflix.\n\nThe 2 Hours\nReclaimed time went to: reading (finished 11 books in 2024), cooking actual meals, longer evening walks, better sleep.\n\nI still use social media — about 20 minutes per day with a timer. That's enough.`,
+   tags:["digital-minimalism","productivity","habits","mindfulness"],author:"Ranjeet Kumar"},
+  {id:2,title:"11 Books I Read in 2024 — And the 3 That Actually Changed How I Think",category:"Books",date:"2025-01-02",
+   image:"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&auto=format&fit=crop&q=70",
+   excerpt:"A full reading year after going nearly bookless for two years. The three that actually shifted something — and why Atomic Habits made the list despite the hype.",
+   content:`In 2022 and 2023, I read maybe four books combined. Work, screens, and the general exhaustion of on-call rosters made it easy to default to passive content.\n\nIn 2024 I read 11. Here are the three that actually shifted something:\n\n1. Atomic Habits — James Clear\nYes, everyone recommends it. The reason: the 1% gains framework is genuinely applicable to anything — including fitness routines that need to survive shift work. The insight I keep returning to: "You do not rise to the level of your goals. You fall to the level of your systems."\n\n2. Deep Work — Cal Newport\nRead this as a knowledge worker constantly interrupted by network alerts and on-call pages. Newport's argument for protecting large blocks of uninterrupted cognitive time felt both obvious and radical. I now block two hours each morning — no Slack, no email, no alerts unless P1.\n\n3. The Almanack of Naval Ravikant\nNot a traditional book. A collection of Naval's thinking on wealth, happiness, and leverage. The long-term compounding mindset translates well to a technology career. Worth reading slowly.\n\nThe other eight were good. These three were load-bearing.`,
+   tags:["books","reading","atomic-habits","learning"],author:"Ranjeet Kumar"},
+  {id:3,title:"The Morning Routine That Survived 6 Months of Shift Work",category:"Habits",date:"2025-02-14",
+   image:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=70",
+   excerpt:"Most morning routine advice assumes you wake up at the same time every day. Here's what actually works when you don't.",
+   content:`Every morning routine article assumes a fixed 6 AM wake-up. That's not my life. Some days I start at 8 AM. Some weeks I'm on-call and my "morning" starts whenever the alerts stop.\n\nThe Constraint-First Design\nInstead of designing a perfect routine and forcing it into my schedule, I designed around the constraint: I have at least 45 minutes every morning before anything work-related, regardless of when I wake up.\n\nThe 45-Minute Minimum\nNo phone for the first 20 minutes. Non-negotiable. The phone stays in the living room.\n\nWater + movement. 500ml of water, then either a 20-minute walk or 15 minutes of stretching. Something is the rule.\n\nOne page of reading or journalling. Low bar, easy to clear. Some days it becomes 20 minutes. Most days it's 5.\n\nWhat I Cut\nMeditation (never stuck), cold showers (hated it), journalling prompts (too structured). Cut all three without guilt.\n\nWhat Stayed\nThe no-phone rule and the movement. These two alone changed the quality of my mornings more than any productivity framework I tried.\n\nThe Honest Caveat\nThis routine fails about once a week. I don't try to recover it — I start fresh the next morning. The streak is not the point. The average is.`,
+   tags:["morning-routine","habits","shift-work","consistency"],author:"Ranjeet Kumar"}
+];
+let posts=[...SEED_POSTS];let nextId=posts.length+1;
+let currentImage=null;
+
+function openHub(){document.getElementById('hub-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeHub(){document.getElementById('hub-overlay').classList.remove('open');document.body.style.overflow='';}
+function closeHubOutside(e){if(e.target===document.getElementById('hub-overlay'))closeHub();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeHub();closeModalBtn();}});
+
+function previewImage(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{currentImage=ev.target.result;document.getElementById('photo-preview-img').src=currentImage;document.getElementById('photo-preview-wrap').style.display='block';document.getElementById('photo-trigger').style.display='none';};reader.readAsDataURL(file);}
+function removeImage(){currentImage=null;document.getElementById('post-image').value='';document.getElementById('photo-preview-wrap').style.display='none';document.getElementById('photo-trigger').style.display='flex';}
+function formatDate(d){const[y,m,day]=d.split('-');return new Date(y,m-1,day).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+function renderGrid(filtered){
+  const grid=document.getElementById('blog-grid');
+  document.getElementById('post-count').textContent=filtered.length;
+  if(!filtered.length){grid.innerHTML=`<div class="empty-state"><div class="empty-state-icon">🌿</div><div class="empty-title">No entries found</div></div>`;return;}
+  grid.innerHTML=filtered.map(p=>`
+    <div class="blog-card">
+      ${p.image?`<div class="card-img"><img src="${p.image}" alt="" loading="lazy"/></div>`:''}
+      <div class="card-top"></div>
+      <div class="card-header"><span class="card-cat">${p.category}</span><span class="card-date">${formatDate(p.date)}</span></div>
+      <div class="card-body"><div class="card-title">${p.title}</div><div class="card-excerpt">${p.excerpt}</div></div>
+      <div class="card-footer"><div class="card-author">${p.author}</div><a class="read-more" href="javascript:void(0)" onclick="openPost(${p.id})">Read →</a></div>
+    </div>`).join('');
+}
+let currentFilter='all';
+function filterPosts(cat,btn){currentFilter=cat;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid(cat==='all'?posts:posts.filter(p=>p.category===cat));}
+function refreshGrid(){renderGrid(currentFilter==='all'?posts:posts.filter(p=>p.category===currentFilter));}
+function openPost(id){
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  document.getElementById('modal-cover-wrap').innerHTML=p.image?`<img class="modal-cover" src="${p.image}" alt=""/>` :'';
+  document.getElementById('modal-cat').textContent=p.category;document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-meta').innerHTML=`<span>${formatDate(p.date)}</span> · ${p.author} · ${p.tags.map(t=>'#'+t).join(' ')}`;
+  document.getElementById('modal-body').innerHTML=p.content.split('\n\n').map(para=>`<p>${para.replace(/\n/g,'<br/>')}</p>`).join('');
+  document.getElementById('blog-modal').classList.add('open');document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('blog-modal'))closeModalBtn();}
+function closeModalBtn(){document.getElementById('blog-modal').classList.remove('open');document.body.style.overflow='';}
+const ADMIN_PASSWORD='admin123';let attempts=0;let locked=false;let adminAuthenticated=false;
+function tryLogin(){if(locked)return;const pw=document.getElementById('admin-pw').value;if(pw===ADMIN_PASSWORD){adminAuthenticated=true;document.getElementById('admin-lock').style.display='none';document.getElementById('admin-panel').classList.add('unlocked');renderAdminList();document.getElementById('post-date').value=new Date().toISOString().split('T')[0];}else{attempts++;document.getElementById('lock-error').classList.add('show');document.getElementById('admin-pw').value='';if(attempts>=5){locked=true;document.getElementById('lock-attempts').textContent='Too many attempts. Locked 30s.';document.querySelector('.lock-btn').disabled=true;setTimeout(()=>{locked=false;attempts=0;document.getElementById('lock-attempts').textContent='';document.querySelector('.lock-btn').disabled=false;},30000);}else{document.getElementById('lock-attempts').textContent=`${5-attempts} attempt(s) remaining`;}}}
+function logout(){adminAuthenticated=false;document.getElementById('admin-panel').classList.remove('unlocked');document.getElementById('admin-lock').style.display='';document.getElementById('admin-pw').value='';document.getElementById('lock-error').classList.remove('show');document.getElementById('lock-attempts').textContent='';attempts=0;locked=false;}
+function updatePreview(){const ex=document.getElementById('post-excerpt').value;document.getElementById('preview-text').textContent=ex||'Your excerpt will appear here…';document.getElementById('excerpt-chars').textContent=ex.length;}
+function countWords(){const c=document.getElementById('post-content').value;document.getElementById('word-count').textContent=c.trim()?c.trim().split(/\s+/).length:0;}
+function resetForm(){['post-title','post-excerpt','post-content','post-tags'].forEach(id=>document.getElementById(id).value='');document.getElementById('post-cat').value='';document.getElementById('post-date').value=new Date().toISOString().split('T')[0];removeImage();updatePreview();countWords();document.getElementById('form-status').classList.remove('show');}
+function publishPost(){if(!adminAuthenticated){alert('Not authenticated.');return;}const title=document.getElementById('post-title').value.trim();const cat=document.getElementById('post-cat').value;const date=document.getElementById('post-date').value;const excerpt=document.getElementById('post-excerpt').value.trim();const content=document.getElementById('post-content').value.trim();const tagsRaw=document.getElementById('post-tags').value;if(!title||!cat||!date||!excerpt||!content){alert('Fill all required fields.');return;}posts.unshift({id:nextId++,title,category:cat,date,excerpt,content,image:currentImage,tags:tagsRaw.split(',').map(t=>t.trim().toLowerCase()).filter(Boolean),author:'Ranjeet Kumar'});refreshGrid();renderAdminList();resetForm();const st=document.getElementById('form-status');st.classList.add('show');setTimeout(()=>st.classList.remove('show'),3500);}
+function renderAdminList(){const c=document.getElementById('admin-post-rows');if(!posts.length){c.innerHTML='<div style="font-size:.78rem;color:#6e665e;padding:14px">No entries yet.</div>';return;}c.innerHTML=posts.map(p=>`<div class="admin-post-row"><div class="admin-post-title-cell">${p.title}</div><div class="admin-post-cat-cell">${p.category}</div><div class="admin-post-date-cell">${formatDate(p.date)}</div><button class="admin-del-btn" onclick="deletePost(${p.id})">Delete</button></div>`).join('');}
+function deletePost(id){if(!confirm('Delete this entry?'))return;posts=posts.filter(p=>p.id!==id);refreshGrid();renderAdminList();}
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+renderGrid(posts);
+</script>
+</body>
+</html>
