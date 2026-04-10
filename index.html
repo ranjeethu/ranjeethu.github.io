@@ -2364,11 +2364,12 @@
 
     /* ── HERO PHOTO ── */
     .hero-photo-wrap {
-      width: 160px;
-      height: 160px;
-      margin: 0 auto 36px;
+      width: 240px;
+      height: 240px;
+      margin: 0 auto 40px;
       position: relative;
-      animation: fadeUp .8s ease both
+      animation: fadeUp .8s ease both;
+      flex-shrink: 0
     }
 
     .hero-photo {
@@ -2377,27 +2378,27 @@
       object-fit: cover;
       object-position: center top;
       border-radius: 50%;
-      border: 2px solid var(--gold);
-      box-shadow: 0 0 32px rgba(255,215,0,.3), 0 0 64px rgba(0,212,255,.15);
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 40px rgba(255,215,0,.35), 0 0 80px rgba(0,212,255,.18);
       display: block
     }
 
     .hero-photo-wrap::before {
       content: '';
       position: absolute;
-      inset: -7px;
+      inset: -9px;
       border-radius: 50%;
-      border: 1px solid rgba(0,212,255,.35);
+      border: 1px solid rgba(0,212,255,.4);
       animation: rotateBorder 10s linear infinite
     }
 
     .hero-photo-wrap::after {
       content: '';
       position: absolute;
-      inset: -14px;
+      inset: -18px;
       border-radius: 50%;
-      border: 1px dashed rgba(255,215,0,.15);
-      animation: rotateBorder 20s linear infinite reverse
+      border: 1px dashed rgba(255,215,0,.18);
+      animation: rotateBorder 22s linear infinite reverse
     }
 
     @keyframes rotateBorder {
@@ -2405,12 +2406,19 @@
     }
 
     /* ── AVATAR PHOTO ── */
+    .avatar-frame {
+      overflow: hidden
+    }
+
     .avatar-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      display: block
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0
     }
 
     /* ── CERT DATE ── */
@@ -2478,11 +2486,11 @@
       <div class="hero-photo-wrap">
         <img src="profile.jpg" class="hero-photo" alt="Ranjeet Kumar — Senior Cybersecurity Analyst" />
       </div>
-      <div class="hero-badge">// Senior Cybersecurity Analyst · Mitigata</div>
+      <div class="hero-badge">Senior Cybersecurity Analyst · Mitigata</div>
       <h1 class="hero-name glitch" data-text="RANJEET KUMAR">RANJEET <span class="accent">KUMAR</span></h1>
       <div class="hero-title">Cybersecurity &nbsp;|&nbsp; Security Operations &nbsp;|&nbsp; Cloud &amp; Network Defense
       </div>
-      <p class="hero-desc">Senior Cybersecurity Analyst at Mitigata — protecting digital infrastructure through threat detection, incident response, and proactive security operations across cloud and network environments.</p>
+      <p class="hero-desc">Senior Cybersecurity Analyst at Mitigata protecting digital infrastructure through threat detection, incident response, and proactive security operations across cloud and network environments.</p>
       <div class="hero-buttons">
         <a href="#experience" class="btn-primary"><span>View Experience</span></a>
         <a href="blogs.html" class="btn-ghost">Read Blog</a>
@@ -2525,9 +2533,9 @@
           </div>
         </div>
         <div class="about-text reveal reveal-delay-2">
-          <p>I'm <strong>Ranjeet Kumar</strong> — Senior Cybersecurity Analyst at <strong>Mitigata</strong>, where I protect organisations through advanced threat detection, security operations, and proactive defense across cloud and network environments.</p>
-          <p>With a background spanning Hitachi Systems, NPCI, and Global Edge Software, I bring 7+ years of cross-domain expertise — from enterprise network engineering and cloud architecture to full-stack security operations. I've built and hardened infrastructure for mission-critical environments across banking, telecom, and enterprise verticals.</p>
-          <p>Beyond the SOC, I'm passionate about fitness, travel, and building a credible personal brand around continuous growth — because a sharp mind and a strong body work better together.</p>
+          <p>I'm <strong>Ranjeet Kumar</strong> Senior Cybersecurity Analyst at <strong>Mitigata</strong>, where I protect organisations through advanced threat detection, security operations, and proactive defense across cloud and network environments.</p>
+          <p>With a background spanning Hitachi Systems, NPCI, and Global Edge Software, I bring 7+ years of cross-domain expertise from enterprise network engineering and cloud architecture to full-stack security operations. I've built and hardened infrastructure for mission-critical environments across banking, telecom, and enterprise verticals.</p>
+          <p>Beyond the SOC, I'm passionate about fitness, travel, and building a credible personal brand around continuous growth because a sharp mind and a strong body work better together.</p>
           <div class="about-tags">
             <span class="tag">Cybersecurity</span>
             <span class="tag">Incident Response</span>
@@ -3159,7 +3167,7 @@ The transition isn't instant, but your network foundation is a huge advantage.`,
     function closeModal(e) { if (e.target === document.getElementById('blog-modal')) closeModalBtn(); }
     function closeModalBtn() { document.getElementById('blog-modal').classList.remove('open'); document.body.style.overflow = ''; }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
-    const ADMIN_PASSWORD = 'ranjeethu123'; let attempts = 0; let locked = false; let adminAuthenticated = false; function tryLogin() { if (locked) return; const pw = document.getElementById('admin-pw').value; const errEl = document.getElementById('lock-error'); const attEl = document.getElementById('lock-attempts'); if (pw === ADMIN_PASSWORD) { adminAuthenticated = true; document.getElementById('admin-lock').style.display = 'none'; document.getElementById('admin-panel').classList.add('unlocked'); renderAdminList(); document.getElementById('post-date').value = new Date().toISOString().split('T')[0]; } else { attempts++; errEl.classList.add('show'); document.getElementById('admin-pw').value = ''; if (attempts >= 5) { locked = true; attEl.textContent = 'Too many failed attempts. Locked for 30 seconds.'; document.querySelector('.lock-btn').disabled = true; setTimeout(() => { locked = false; attempts = 0; attEl.textContent = ''; document.querySelector('.lock-btn').disabled = false; }, 30000); } else { attEl.textContent = `${5 - attempts} attempt(s) remaining`; } } }
+    const _AH = '44a1a49f74c19c1d0b24760d52078627cc37909aa088341d281d517bfca835e5'; let attempts = 0; let locked = false; let adminAuthenticated = false; async function _hash(s) { const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join(''); } async function tryLogin() { if (locked) return; const pw = document.getElementById('admin-pw').value; const errEl = document.getElementById('lock-error'); const attEl = document.getElementById('lock-attempts'); const h = await _hash(pw); if (h === _AH) { adminAuthenticated = true; document.getElementById('admin-lock').style.display = 'none'; document.getElementById('admin-panel').classList.add('unlocked'); renderAdminList(); document.getElementById('post-date').value = new Date().toISOString().split('T')[0]; } else { attempts++; errEl.classList.add('show'); document.getElementById('admin-pw').value = ''; if (attempts >= 5) { locked = true; attEl.textContent = 'Too many failed attempts. Locked for 30 seconds.'; document.querySelector('.lock-btn').disabled = true; setTimeout(() => { locked = false; attempts = 0; attEl.textContent = ''; document.querySelector('.lock-btn').disabled = false; }, 30000); } else { attEl.textContent = `${5 - attempts} attempt(s) remaining`; } } }
     function logout() { adminAuthenticated = false; document.getElementById('admin-panel').classList.remove('unlocked'); document.getElementById('admin-lock').style.display = ''; document.getElementById('admin-pw').value = ''; document.getElementById('lock-error').classList.remove('show'); document.getElementById('lock-attempts').textContent = ''; attempts = 0; locked = false; }
     function updatePreview() { const ex = document.getElementById('post-excerpt').value; document.getElementById('preview-text').textContent = ex || 'Your excerpt will appear here…'; document.getElementById('excerpt-chars').textContent = ex.length; }
     function countWords() { const content = document.getElementById('post-content').value; const words = content.trim() ? content.trim().split(/\s+/).length : 0; document.getElementById('word-count').textContent = words; }
