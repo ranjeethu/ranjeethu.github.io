@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open \"/Users/rk/Website /index.html\")",
+      "Bash(open \"/Users/rk/Website /lifestyle.html\")",
+      "Read(//Users/rk/Website /**)",
+      "Bash(ls \"/Users/rk/Website \"/*.html)",
+      "Bash(git config:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/rk/Website "
+    ]
+  }
+}
