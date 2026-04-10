@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ranjeet Kumar — Portfolio & Blog</title>
+  <title>Ranjeethu — Senior Cybersecurity Analyst | Security, Cloud & Network Defense</title>
+  <meta name="description" content="Ranjeet Kumar — Senior Cybersecurity Analyst at Mitigata. Specialising in security operations, threat detection, incident response, cloud security, and network defense." />
   <link
     href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap"
     rel="stylesheet" />
@@ -2360,6 +2361,77 @@
         margin-bottom: 32px
       }
     }
+
+    /* ── HERO PHOTO ── */
+    .hero-photo-wrap {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 36px;
+      position: relative;
+      animation: fadeUp .8s ease both
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 32px rgba(255,215,0,.3), 0 0 64px rgba(0,212,255,.15);
+      display: block
+    }
+
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -7px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,212,255,.35);
+      animation: rotateBorder 10s linear infinite
+    }
+
+    .hero-photo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255,215,0,.15);
+      animation: rotateBorder 20s linear infinite reverse
+    }
+
+    @keyframes rotateBorder {
+      to { transform: rotate(360deg) }
+    }
+
+    /* ── AVATAR PHOTO ── */
+    .avatar-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block
+    }
+
+    /* ── CERT DATE ── */
+    .cert-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: 1px;
+      color: var(--dim);
+      margin-top: 4px
+    }
+
+    .cert-card .current-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: 2px;
+      color: var(--green);
+      border: 1px solid rgba(0,255,65,.25);
+      padding: 2px 8px;
+      display: inline-block;
+      margin-top: 5px
+    }
   </style>
 </head>
 
@@ -2385,50 +2457,52 @@
   </nav>
   <div class="noc-ticker" style="margin-top:60px;">
     <div class="noc-ticker-inner">
-      <span class="noc-item">CISCO IOS <span class="ok">▲ ACTIVE</span></span>
-      <span class="noc-item">NETWORK UPTIME <span class="val">99.9%</span></span>
-      <span class="noc-item">JUNIPER CERTIFIED <span class="ok">✓ VERIFIED</span></span>
-      <span class="noc-item">AZURE NETWORK <span class="val">CERTIFIED</span></span>
-      <span class="noc-item">FORTIGATE FW <span class="ok">▲ ONLINE</span></span>
-      <span class="noc-item">BGP ROUTES <span class="val">STABLE</span></span>
-      <span class="noc-item">IOT / BLE <span class="ok">▲ READY</span></span>
-      <span class="noc-item">VPC FLOW <span class="val">MONITORING</span></span>
-      <span class="noc-item">HOME AUTOMATION <span class="ok">DEPLOYED</span></span>
-      <span class="noc-item">NETWORK SECURITY <span class="val">HARDENED</span></span>
-      <span class="noc-item">CISCO IOS <span class="ok">▲ ACTIVE</span></span>
-      <span class="noc-item">NETWORK UPTIME <span class="val">99.9%</span></span>
+      <span class="noc-item">SOC STATUS <span class="ok">▲ OPERATIONAL</span></span>
+      <span class="noc-item">THREAT INTEL <span class="val">ACTIVE MONITORING</span></span>
+      <span class="noc-item">INCIDENT RESPONSE <span class="ok">✓ READY</span></span>
+      <span class="noc-item">CLOUD SECURITY <span class="val">ENFORCED</span></span>
+      <span class="noc-item">VULNERABILITY MGMT <span class="ok">▲ SCANNING</span></span>
+      <span class="noc-item">ENDPOINT DEFENSE <span class="val">PROTECTED</span></span>
+      <span class="noc-item">NETWORK IDS/IPS <span class="ok">▲ INLINE</span></span>
+      <span class="noc-item">SIEM CORRELATION <span class="val">RUNNING</span></span>
+      <span class="noc-item">PALO ALTO NGFW <span class="ok">▲ ONLINE</span></span>
+      <span class="noc-item">MITIGATA SOC <span class="val">ENGAGED</span></span>
+      <span class="noc-item">SOC STATUS <span class="ok">▲ OPERATIONAL</span></span>
+      <span class="noc-item">THREAT INTEL <span class="val">ACTIVE MONITORING</span></span>
     </div>
   </div>
   <section id="hero">
     <div class="hero-grid"></div>
     <div class="hero-nodes" id="hero-nodes"></div>
-    <div style="position:relative;z-index:2">
-      <div class="hero-badge">// Network Engineer · Cloud · Software</div>
-      <h1 class="hero-name glitch" data-text="RANJEET KUMAR">RANJEET <span class="accent">KUMAR</span></h1>
-      <div class="hero-title">Network Engineering &nbsp;|&nbsp; Cloud Architecture &nbsp;|&nbsp; Software Automation
+    <div style="position:relative;z-index:2;text-align:center">
+      <div class="hero-photo-wrap">
+        <img src="profile.jpg" class="hero-photo" alt="Ranjeet Kumar — Senior Cybersecurity Analyst" />
       </div>
-      <p class="hero-desc">Forward-thinking engineer delivering enterprise network designs, Azure cloud solutions, and
-        software automation for mission-critical environments.</p>
+      <div class="hero-badge">// Senior Cybersecurity Analyst · Mitigata</div>
+      <h1 class="hero-name glitch" data-text="RANJEET KUMAR">RANJEET <span class="accent">KUMAR</span></h1>
+      <div class="hero-title">Cybersecurity &nbsp;|&nbsp; Security Operations &nbsp;|&nbsp; Cloud &amp; Network Defense
+      </div>
+      <p class="hero-desc">Senior Cybersecurity Analyst at Mitigata — protecting digital infrastructure through threat detection, incident response, and proactive security operations across cloud and network environments.</p>
       <div class="hero-buttons">
         <a href="#experience" class="btn-primary"><span>View Experience</span></a>
-        <a href="#blog" class="btn-ghost">Read Blog</a>
+        <a href="blogs.html" class="btn-ghost">Read Blog</a>
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <div class="stat-num" data-target="5">0</div>
+          <div class="stat-num" data-target="7">0</div>
           <div class="stat-label">Years Experience</div>
         </div>
         <div class="stat">
-          <div class="stat-num" data-target="3">0</div>
+          <div class="stat-num" data-target="8">0</div>
           <div class="stat-label">Certifications</div>
         </div>
         <div class="stat">
-          <div class="stat-num" data-target="3">0</div>
+          <div class="stat-num" data-target="4">0</div>
           <div class="stat-label">Companies</div>
         </div>
         <div class="stat">
-          <div class="stat-num" data-target="90">0</div>
-          <div class="stat-label">Customer Satisfaction</div>
+          <div class="stat-num" data-target="95">0</div>
+          <div class="stat-label">Client Satisfaction</div>
         </div>
       </div>
     </div>
@@ -2445,27 +2519,24 @@
       <div class="about-grid">
         <div class="about-avatar reveal">
           <div class="avatar-frame">
-            <div class="avatar-icon">🌐</div>
+            <img src="profile.jpg" alt="Ranjeet Kumar" />
             <div class="avatar-corner"></div>
-            <div class="avatar-label">NETWORK OPERATOR</div>
+            <div class="avatar-label">CYBERSECURITY ANALYST</div>
           </div>
         </div>
         <div class="about-text reveal reveal-delay-2">
-          <p>I'm a <strong>Network Engineer at Hitachi Systems India Pvt Ltd, Bangalore</strong> — a forward-thinking
-            professional skilled in infrastructure design, automation, and cross-functional collaboration.</p>
-          <p>My experience includes enterprise network operations across Cisco, Juniper, and HP/Aruba platforms, plus
-            Azure cloud networking and IoT software projects for Samsung ARTIK and Raspberry Pi.</p>
-          <p>I bring precision, documentation discipline, and operational resilience to every engagement. I specialise
-            in HLD/LLD design, incident response, and scalable network automation.</p>
+          <p>I'm <strong>Ranjeet Kumar</strong> — Senior Cybersecurity Analyst at <strong>Mitigata</strong>, where I protect organisations through advanced threat detection, security operations, and proactive defense across cloud and network environments.</p>
+          <p>With a background spanning Hitachi Systems, NPCI, and Global Edge Software, I bring 7+ years of cross-domain expertise — from enterprise network engineering and cloud architecture to full-stack security operations. I've built and hardened infrastructure for mission-critical environments across banking, telecom, and enterprise verticals.</p>
+          <p>Beyond the SOC, I'm passionate about fitness, travel, and building a credible personal brand around continuous growth — because a sharp mind and a strong body work better together.</p>
           <div class="about-tags">
-            <span class="tag">Cisco</span>
-            <span class="tag">Juniper</span>
-            <span class="tag">Azure</span>
-            <span class="tag">Fortigate</span>
-            <span class="tag">NOC</span>
-            <span class="tag">IoT</span>
-            <span class="tag">Linux</span>
-            <span class="tag">HLD / LLD</span>
+            <span class="tag">Cybersecurity</span>
+            <span class="tag">Incident Response</span>
+            <span class="tag">Threat Analysis</span>
+            <span class="tag">Palo Alto</span>
+            <span class="tag">Cloud Security</span>
+            <span class="tag">SIEM</span>
+            <span class="tag">Vulnerability Mgmt</span>
+            <span class="tag">Network Defense</span>
           </div>
         </div>
       </div>
@@ -2479,114 +2550,114 @@
       </div>
       <div class="skills-grid">
         <div class="skill-card reveal">
-          <div class="skill-card-icon">🔌</div>
-          <div class="skill-card-title">Network Engineering</div>
+          <div class="skill-card-icon">🛡️</div>
+          <div class="skill-card-title">Security Operations</div>
           <div class="skill-item">
-            <div class="skill-label"><span>Cisco Routing & Switching</span><span class="skill-pct">92%</span></div>
+            <div class="skill-label"><span>Threat Detection & Analysis</span><span class="skill-pct">92%</span></div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="92"></div>
             </div>
           </div>
           <div class="skill-item">
-            <div class="skill-label"><span>Juniper Networks</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="85"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Aruba Switching</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="88"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>VPC & IP Design</span><span class="skill-pct">84%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="84"></div>
-            </div>
-          </div>
-        </div>
-        <div class="skill-card reveal reveal-delay-1">
-          <div class="skill-card-icon">☁️</div>
-          <div class="skill-card-title">Cloud & Security</div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Azure Networking</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="88"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Fortigate Firewall</span><span class="skill-pct">82%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="82"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Security Hardening</span><span class="skill-pct">80%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="80"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Monitoring</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="85"></div>
-            </div>
-          </div>
-        </div>
-        <div class="skill-card reveal reveal-delay-2">
-          <div class="skill-card-icon">💻</div>
-          <div class="skill-card-title">Software Engineering</div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Shell & Automation</span><span class="skill-pct">85%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="85"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>Linux Admin</span><span class="skill-pct">88%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="88"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>App Development</span><span class="skill-pct">82%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="82"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <div class="skill-label"><span>IoT Protocols</span><span class="skill-pct">80%</span></div>
-            <div class="skill-bar-bg">
-              <div class="skill-bar" data-width="80"></div>
-            </div>
-          </div>
-        </div>
-        <div class="skill-card reveal">
-          <div class="skill-card-icon">🗺️</div>
-          <div class="skill-card-title">Documentation & NOC</div>
-          <div class="skill-item">
-            <div class="skill-label"><span>HLD / LLD</span><span class="skill-pct">90%</span></div>
+            <div class="skill-label"><span>Incident Response</span><span class="skill-pct">90%</span></div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="90"></div>
             </div>
           </div>
           <div class="skill-item">
-            <div class="skill-label"><span>Incident Response</span><span class="skill-pct">88%</span></div>
+            <div class="skill-label"><span>SIEM & Log Correlation</span><span class="skill-pct">88%</span></div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="88"></div>
             </div>
           </div>
           <div class="skill-item">
-            <div class="skill-label"><span>Root Cause</span><span class="skill-pct">85%</span></div>
+            <div class="skill-label"><span>Vulnerability Management</span><span class="skill-pct">87%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="87"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-card reveal reveal-delay-1">
+          <div class="skill-card-icon">☁️</div>
+          <div class="skill-card-title">Cloud & Network Security</div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Cloud Security (AWS/Azure)</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="88"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Palo Alto NGFW</span><span class="skill-pct">85%</span></div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="85"></div>
             </div>
           </div>
           <div class="skill-item">
-            <div class="skill-label"><span>Vendor Ops</span><span class="skill-pct">87%</span></div>
+            <div class="skill-label"><span>Network Defense & IDS/IPS</span><span class="skill-pct">87%</span></div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="87"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Zero Trust Architecture</span><span class="skill-pct">82%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="82"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-card reveal reveal-delay-2">
+          <div class="skill-card-icon">🔍</div>
+          <div class="skill-card-title">Analysis & Consulting</div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Presales / Technical Consulting</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="90"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Risk & Threat Assessment</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="88"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Stakeholder Reporting</span><span class="skill-pct">87%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="87"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Security Research</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="85"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-card-icon">⚙️</div>
+          <div class="skill-card-title">Operations & Infrastructure</div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Endpoint Security</span><span class="skill-pct">88%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="88"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Linux & Shell Scripting</span><span class="skill-pct">85%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="85"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Remediation Coordination</span><span class="skill-pct">87%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="87"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-label"><span>Documentation & Runbooks</span><span class="skill-pct">90%</span></div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar" data-width="90"></div>
             </div>
           </div>
         </div>
@@ -2602,8 +2673,21 @@
       <div class="timeline">
         <div class="timeline-item reveal">
           <div class="timeline-dot"></div>
-          <div class="timeline-meta"><span class="timeline-date">Dec 2020 – Present</span><span class="timeline-type">//
-              Full-Time · Senior Role</span></div>
+          <div class="timeline-meta"><span class="timeline-date">Mar 2026 – Present</span><span class="timeline-type">// Full-Time · Current Role</span></div>
+          <div class="timeline-title">Senior Cybersecurity Analyst</div>
+          <div class="timeline-company">Mitigata — Bangalore</div>
+          <ul class="timeline-points">
+            <li>Monitor and analyse security alerts across endpoint, network, and cloud environments using advanced SIEM and threat intelligence platforms.</li>
+            <li>Investigate suspicious activity, perform root cause analysis, and lead incident response workflows from detection through containment and recovery.</li>
+            <li>Conduct vulnerability assessments and coordinate structured remediation with internal teams and stakeholders.</li>
+            <li>Deliver presales support and technical consulting — translating complex security requirements into actionable architecture and solution proposals.</li>
+            <li>Prepare executive-level reports, threat briefings, and security posture insights for leadership and clients.</li>
+            <li>Continuously tune detection rules, review telemetry, and improve security visibility across tools and log sources to strengthen proactive defense.</li>
+          </ul>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-meta"><span class="timeline-date">Dec 2020 – Feb 2026</span><span class="timeline-type">// Full-Time · Senior Role</span></div>
           <div class="timeline-title">Network Engineer</div>
           <div class="timeline-company">Hitachi Systems India Pvt Ltd — Bangalore</div>
           <ul class="timeline-points">
@@ -2658,24 +2742,67 @@
       </div>
       <div class="certs-grid reveal">
         <div class="cert-card">
+          <div class="cert-icon">🌐</div>
+          <div>
+            <div class="cert-name">F5 Distributed Cloud Technical Pre-Sales</div>
+            <div class="cert-issuer">F5 Networks</div>
+            <div class="current-badge">● ACTIVE</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🛡️</div>
+          <div>
+            <div class="cert-name">CYBERFORCE: Defender</div>
+            <div class="cert-issuer">Cyberforce Security</div>
+            <div class="current-badge">● ACTIVE</div>
+          </div>
+        </div>
+        <div class="cert-card">
           <div class="cert-icon">🏅</div>
           <div>
-            <div class="cert-name">CCNA</div>
+            <div class="cert-name">Cisco Certified Specialist</div>
             <div class="cert-issuer">Cisco Systems</div>
+            <div class="cert-date">Enterprise Infrastructure</div>
           </div>
         </div>
         <div class="cert-card">
           <div class="cert-icon">🔷</div>
           <div>
-            <div class="cert-name">JNCIA</div>
-            <div class="cert-issuer">Juniper Networks</div>
+            <div class="cert-name">VMware Certified Technical Associate</div>
+            <div class="cert-issuer">VMware · Broadcom</div>
+            <div class="cert-date">Network Virtualization</div>
           </div>
         </div>
         <div class="cert-card">
           <div class="cert-icon">☁️</div>
           <div>
-            <div class="cert-name">Azure Network Engineer Associate</div>
-            <div class="cert-issuer">Microsoft</div>
+            <div class="cert-name">AWS Certified Advanced Networking</div>
+            <div class="cert-issuer">Amazon Web Services</div>
+            <div class="current-badge">● ACTIVE</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🔥</div>
+          <div>
+            <div class="cert-name">Palo Alto Networks System Engineer (PSE)</div>
+            <div class="cert-issuer">Palo Alto Networks</div>
+            <div class="current-badge">● ACTIVE</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🔐</div>
+          <div>
+            <div class="cert-name">Palo Alto Networks Certified Software</div>
+            <div class="cert-issuer">Palo Alto Networks</div>
+            <div class="current-badge">● ACTIVE</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">📊</div>
+          <div>
+            <div class="cert-name">Dynatrace Associate</div>
+            <div class="cert-issuer">Dynatrace</div>
+            <div class="cert-date">Observability & Security</div>
           </div>
         </div>
       </div>
@@ -2881,9 +3008,8 @@
       </div>
       <div class="contact-grid">
         <div class="contact-info reveal">
-          <h3>Let's Build Resilient Networks Together</h3>
-          <p>Open to senior network engineering roles, cloud networking opportunities, and technical leadership
-            positions. Based in Bangalore (560079) — available for on-site or hybrid work.</p>
+          <h3>Let's Strengthen Security Together</h3>
+          <p>Open to cybersecurity consulting, senior analyst roles, and technical partnerships. Based in Bangalore (560079) — available for on-site, hybrid, or remote engagements.</p>
           <div class="contact-links">
             <a href="mailto:ranjeethkumar054@gmail.com" class="contact-link">
               <div class="contact-link-icon">✉</div>ranjeethkumar054@gmail.com
@@ -2931,7 +3057,7 @@
     </div>
   </section>
   <footer>
-    <div class="footer-copy">© 2025 <span>Ranjeet Kumar</span> · All systems operational.</div>
+    <div class="footer-copy">© 2026 <span>Ranjeet Kumar</span> · All systems operational.</div>
     <div class="footer-links"><a href="https://linkedin.com/in/ranjeethkumar054" target="_blank">LinkedIn</a><a
         href="mailto:ranjeethkumar054@gmail.com">Email</a></div>
   </footer>
@@ -3033,7 +3159,7 @@ The transition isn't instant, but your network foundation is a huge advantage.`,
     function closeModal(e) { if (e.target === document.getElementById('blog-modal')) closeModalBtn(); }
     function closeModalBtn() { document.getElementById('blog-modal').classList.remove('open'); document.body.style.overflow = ''; }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
-    const ADMIN_PASSWORD = 'admin123'; let attempts = 0; let locked = false; let adminAuthenticated = false; function tryLogin() { if (locked) return; const pw = document.getElementById('admin-pw').value; const errEl = document.getElementById('lock-error'); const attEl = document.getElementById('lock-attempts'); if (pw === ADMIN_PASSWORD) { adminAuthenticated = true; document.getElementById('admin-lock').style.display = 'none'; document.getElementById('admin-panel').classList.add('unlocked'); renderAdminList(); document.getElementById('post-date').value = new Date().toISOString().split('T')[0]; } else { attempts++; errEl.classList.add('show'); document.getElementById('admin-pw').value = ''; if (attempts >= 5) { locked = true; attEl.textContent = 'Too many failed attempts. Locked for 30 seconds.'; document.querySelector('.lock-btn').disabled = true; setTimeout(() => { locked = false; attempts = 0; attEl.textContent = ''; document.querySelector('.lock-btn').disabled = false; }, 30000); } else { attEl.textContent = `${5 - attempts} attempt(s) remaining`; } } }
+    const ADMIN_PASSWORD = 'ranjeethu123'; let attempts = 0; let locked = false; let adminAuthenticated = false; function tryLogin() { if (locked) return; const pw = document.getElementById('admin-pw').value; const errEl = document.getElementById('lock-error'); const attEl = document.getElementById('lock-attempts'); if (pw === ADMIN_PASSWORD) { adminAuthenticated = true; document.getElementById('admin-lock').style.display = 'none'; document.getElementById('admin-panel').classList.add('unlocked'); renderAdminList(); document.getElementById('post-date').value = new Date().toISOString().split('T')[0]; } else { attempts++; errEl.classList.add('show'); document.getElementById('admin-pw').value = ''; if (attempts >= 5) { locked = true; attEl.textContent = 'Too many failed attempts. Locked for 30 seconds.'; document.querySelector('.lock-btn').disabled = true; setTimeout(() => { locked = false; attempts = 0; attEl.textContent = ''; document.querySelector('.lock-btn').disabled = false; }, 30000); } else { attEl.textContent = `${5 - attempts} attempt(s) remaining`; } } }
     function logout() { adminAuthenticated = false; document.getElementById('admin-panel').classList.remove('unlocked'); document.getElementById('admin-lock').style.display = ''; document.getElementById('admin-pw').value = ''; document.getElementById('lock-error').classList.remove('show'); document.getElementById('lock-attempts').textContent = ''; attempts = 0; locked = false; }
     function updatePreview() { const ex = document.getElementById('post-excerpt').value; document.getElementById('preview-text').textContent = ex || 'Your excerpt will appear here…'; document.getElementById('excerpt-chars').textContent = ex.length; }
     function countWords() { const content = document.getElementById('post-content').value; const words = content.trim() ? content.trim().split(/\s+/).length : 0; document.getElementById('word-count').textContent = words; }
